@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refer and Earn App</title>
+    <title>Referral Marketing App</title>
     <style>
         .container {
             max-width: 600px;
@@ -30,7 +30,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Refferal Marketing</h1>
+        <h1>Referral Marketing</h1>
         <div id="referral-link">
             Your referral link: <input type="text" id="referral-input" readonly>
             <button onclick="copyReferralLink()">Copy</button>
@@ -38,45 +38,23 @@
         <div id="referral-count">
             Total Referrals: <span id="referral-count-value">0</span>
         </div>
-        <button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+        <button onclick="shareOnWhatsApp()">Share on WhatsApp Group</button>
     </div>
 
     <script>
-        // Array of WhatsApp referral links
-        const whatsappLinks = [
-            "https://chat.whatsapp.com/C8iJguUCOUj3AFNn7Q0hE2",
-            "https://whatsapp.com/channel/0029VaLCZNs1XquXrwst7a0s",
-            "https://chat.whatsapp.com/IeY5W98hw2WHXE3csRs1mh",
-            "https://chat.whatsapp.com/C8iJguUCOUj3AFNn7Q0hE2"
-        ];
-        let currentLinkIndex = 0;
+        const whatsappGroupLink = "https://chat.whatsapp.com/C8iJguUCOUj3AFNn7Q0hE2";
 
-        // Function to generate a random referral code
         function generateReferralCode() {
             return Math.random().toString(36).substr(2, 8).toUpperCase();
         }
 
-        // Function to generate the next WhatsApp referral link in the array
-        function generateWhatsAppLink() {
-            const whatsappLink = whatsappLinks[currentLinkIndex];
-            currentLinkIndex = (currentLinkIndex + 1) % whatsappLinks.length; // Loop back to the first link if at the end
-            return whatsappLink;
-        }
-
-        // Function to update the referral link and count
         function updateReferralInfo() {
             const referralInput = document.getElementById('referral-input');
+            referralInput.value = whatsappGroupLink;
             const referralCount = document.getElementById('referral-count-value');
-            const referralCode = generateReferralCode();
-            const whatsappLink = generateWhatsAppLink();
-            referralInput.value = `${whatsappLink}/${referralCode}`;
-            // Fetch referral count from database or any storage
-            // For now, let's assume it's stored in a variable
-            let count = 0; // Assume count is 0 initially
-            referralCount.textContent = count;
+            referralCount.textContent = getReferralCount(); // Assume there's a function to fetch the count
         }
 
-        // Function to copy referral link to clipboard
         function copyReferralLink() {
             const referralInput = document.getElementById('referral-input');
             referralInput.select();
@@ -84,17 +62,22 @@
             alert('Referral link copied to clipboard!');
         }
 
-        // Function to share on WhatsApp
         function shareOnWhatsApp() {
             const message = "Check out this referral link!";
             const referralInput = document.getElementById('referral-input');
             const referralLink = referralInput.value;
-            const whatsappUrl = "https://api.whatsapp.com/send?text=refral,withyourfriends" + encodeURIComponent(message + " " + referralLink);
+            const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message + " " + referralLink);
             window.open(whatsappUrl, '_blank');
         }
 
-        // Call updateReferralInfo on page load
+        function getReferralCount() {
+            // Fetch referral count from database or any storage
+            // For now, let's assume it's stored in a variable
+            return 0; // Assume count is 0 initially
+        }
+
         updateReferralInfo();
     </script>
 </body>
 </html>
+
