@@ -42,17 +42,23 @@
     </div>
 
     <script>
-        const whatsappGroupLink = "https://chat.whatsapp.com/C8iJguUCOUj3AFNn7Q0hE2";
-
-        function generateReferralCode() {
-            return Math.random().toString(36).substr(2, 8).toUpperCase();
-        }
+        const referralLinks = [
+            "https://www.linkedin.com/in/muhammedadnanvv/",
+            "https://topmate.io/join/muhammad_adnan10",
+            "https://chat.whatsapp.com/C8iJguUCOUj3AFNn7Q0hE2",
+            "https://www.linkedin.com/in/adwebcomicagency/"
+        ];
+        let currentReferralIndex = 0;
 
         function updateReferralInfo() {
             const referralInput = document.getElementById('referral-input');
-            referralInput.value = whatsappGroupLink;
-            const referralCount = document.getElementById('referral-count-value');
-            referralCount.textContent = getReferralCount(); // Assume there's a function to fetch the count
+            const selectedLink = referralLinks[currentReferralIndex];
+            referralInput.value = selectedLink;
+            currentReferralIndex = (currentReferralIndex + 1) % referralLinks.length; // Loop through the links
+            // Here you can fetch the referral count asynchronously if needed
+            // For now, let's assume it's fetched successfully
+            const referralCount = getReferralCount(); // Assume there's a function to fetch the count
+            document.getElementById('referral-count-value').textContent = referralCount;
         }
 
         function copyReferralLink() {
@@ -63,21 +69,31 @@
         }
 
         function shareOnWhatsApp() {
-            const message = "Check out this referral link!";
             const referralInput = document.getElementById('referral-input');
-            const referralLink = referralInput.value;
-            const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message + " " + referralLink);
+            const message = "Check out this referral link: " + referralInput.value;
+            const whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
             window.open(whatsappUrl, '_blank');
         }
 
         function getReferralCount() {
-            // Fetch referral count from database or any storage
-            // For now, let's assume it's stored in a variable
-            return 0; // Assume count is 0 initially
+            // Here you can fetch the referral count asynchronously if needed
+            // For now, let's return a random count for demonstration purposes
+            return Math.floor(Math.random() * 100); // Return a random count between 0 and 100
         }
 
         updateReferralInfo();
     </script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+
 </body>
 </html>
-
